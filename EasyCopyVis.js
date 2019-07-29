@@ -2,7 +2,7 @@
  * @Author: Antoine YANG
  * @Date: 2019-07-25 15:53:54
  * @Last Modified by: Antoine YANG
- * @Last Modified time: 2019-07-29 12:06:12
+ * @Last Modified time: 2019-07-29 13:13:12
  */
 var Box = /** @class */ (function () {
     function Box() {
@@ -52,8 +52,8 @@ $(document).ready(function () {
         .css('position', 'absolute')
         .css('top', "" + $('body').css('margin-top'))
         .css('left', "" + $('body').css('margin-left'))
-        .css('width', '190px')
-        .css('height', '20')
+        .css('width', 'auto')
+        .css('height', 'auto')
         .css('padding', '4px 6px 4px 26px')
         .css('-webkit-user-select', 'none')
         .css('-moz-user-select', 'none')
@@ -145,8 +145,17 @@ $(document).ready(function () {
         .mousemove(function (event) {
         var x = event.pageX - parseFloat($('div.active').attr('_dx_'));
         var y = event.pageY - parseFloat($('div.active').attr('_dy_'));
-        if (x < parseFloat($('body').css('margin-left')) || x + parseFloat($('div.active').css('width')) + 18 > parseFloat($("body").css('width')) ||
-            y < parseFloat($('body').css('margin-top')) || y + parseFloat($('div:active').css('height')) > parseFloat($('body').css('height')))
+        x = x < parseFloat($('body').css('margin-left'))
+            ? parseFloat($('body').css('margin-left'))
+            : x + parseFloat($('div.active').css('width')) + 18 > parseFloat($("body").css('width'))
+                ? parseFloat($("body").css('width')) - parseFloat($('div.active').css('width')) - 18
+                : x;
+        y = y < parseFloat($('body').css('margin-top'))
+            ? parseFloat($('body').css('margin-top'))
+            : y + parseFloat($('div:active').css('height')) + 18 > parseFloat($('body').css('height'))
+                ? parseFloat($('body').css('height')) - parseFloat($('div:active').css('height')) - 18
+                : y;
+        if (y + parseFloat($('div:active').css('height')) > parseFloat($('body').css('height')))
             return;
         $('div.active').css('top', y + "px").css('left', x + "px");
     });
