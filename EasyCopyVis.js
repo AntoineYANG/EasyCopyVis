@@ -2,7 +2,7 @@
  * @Author: Antoine YANG
  * @Date: 2019-07-25 15:53:54
  * @Last Modified by: Antoine YANG
- * @Last Modified time: 2019-07-27 12:23:08
+ * @Last Modified time: 2019-07-29 12:06:12
  */
 var Box = /** @class */ (function () {
     function Box() {
@@ -48,9 +48,12 @@ $(document).ready(function () {
     $('body').append('<div></div>');
     $('body div:last').css('background', '#bbbbbb')
         .css('border', '1px solid black')
+        .css('border-radius', '3px 12px 4px 16px')
         .css('position', 'absolute')
-        .css('top', '0px')
-        .css('left', '0px')
+        .css('top', "" + $('body').css('margin-top'))
+        .css('left', "" + $('body').css('margin-left'))
+        .css('width', '190px')
+        .css('height', '20')
         .css('padding', '4px 6px 4px 26px')
         .css('-webkit-user-select', 'none')
         .css('-moz-user-select', 'none')
@@ -69,16 +72,19 @@ $(document).ready(function () {
     });
     $('body div:last').append('<button></button>');
     $('body div:last button:last').attr('type', 'button')
-        .text('Add box')
-        .css('width', '80px')
+        .text('Add...')
+        .css('margin-right', '6px')
+        .css('width', '70px')
+        .css('border-radius', '4px')
         .click(function () {
         new Box();
     });
     $('body div:last').append('<button></button>');
     $('body div:last button:last').attr('type', 'button')
-        .css('margin-left', '6px')
         .text('Hide all')
-        .css('width', '80px')
+        .css('width', 'auto')
+        .css('margin-right', '2px')
+        .css('border-radius', '4px')
         .click(function () {
         if ($(this).text() == 'Hide all') {
             $('.parentbox').hide();
@@ -92,7 +98,8 @@ $(document).ready(function () {
     $('body div:last').append('<button></button>');
     $('body div:last button:last').attr('type', 'button')
         .text('Clear')
-        .css('width', '50px')
+        .css('width', 'auto')
+        .css('border-radius', '4px')
         .click(function () {
         $('.parentbox').remove();
         Box.count = 0;
@@ -122,8 +129,8 @@ $(document).ready(function () {
                 .mouseover(function (event) {
                 var dx = event.pageX - parseFloat($(this).css('left'));
                 var dy = event.pageY - parseFloat($(this).css('top'));
-                if (!Box.ready || dx < 0 || dx > parseFloat($(this).css('width')) ||
-                    dy < 0 || dy > parseFloat($(this).css('height')))
+                if (!Box.ready || dx < parseFloat($('body').css('margin-left')) || dx > parseFloat($(this).css('width')) ||
+                    dy < parseFloat($('body').css('margin-top')) || dy > parseFloat($(this).css('height')))
                     return;
                 $(this).addClass('ready').css('background', '#bbbbbb88');
             })
@@ -138,6 +145,9 @@ $(document).ready(function () {
         .mousemove(function (event) {
         var x = event.pageX - parseFloat($('div.active').attr('_dx_'));
         var y = event.pageY - parseFloat($('div.active').attr('_dy_'));
+        if (x < parseFloat($('body').css('margin-left')) || x + parseFloat($('div.active').css('width')) + 18 > parseFloat($("body").css('width')) ||
+            y < parseFloat($('body').css('margin-top')) || y + parseFloat($('div:active').css('height')) > parseFloat($('body').css('height')))
+            return;
         $('div.active').css('top', y + "px").css('left', x + "px");
     });
     $('.cloneable').addClass('still')
